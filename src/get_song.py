@@ -59,6 +59,12 @@ def move_song(old_path: pathlib.Path, new_path: pathlib.Path, is_verbose: bool):
     """
     Move song from download location to the passed in path.
     """
+    if not old_path.exists():
+        print(f'{str(old_path)} in path does not exist in the filesystem')
+        sys.exit(1)
+    if not new_path.exists():
+        print(f'{str(new_path)} in path does not exist in the filesystem')
+        sys.exit(1)
     song = get_current_directory(old_path)
     new_path = new_path.joinpath(song)
     old_path.rename(new_path)
@@ -69,6 +75,8 @@ def move_song(old_path: pathlib.Path, new_path: pathlib.Path, is_verbose: bool):
 def get_cover(art_name: str, alb_name: str, is_verbose: bool):
     """
     Gets the album cover for a given album by artists.
+
+    Outputs the image to ~/Music/art_name/alb_name/cover.jpg
     """
     aname = get_space_separated(art_name)
     bname = get_space_separated(alb_name)
@@ -96,15 +104,28 @@ def usage():
     print('-h, --help\t\thelp menu (this menu)')
 
 
-def run(song_link: str, artist_name: str, album_name: str, is_verbose: bool):
-    """Gets the song with youtube-dl and creates directory if doesn't exist."""
+def run(song_link: str, artist_name: str, album_name: str, is_verbose: bool,
+        cover: bool):
+    """
+    Driver function of the module.
+    Gets the song with youtube-dl and creates directory if doesn't exist.  Then
+    get's the album artwork unless otherwise specified.
+
+    Params:
+        song_link: link to the song, link that will be used in youtube-dl call
+        artist_name: name of the artist
+        album_name: name of the album
+        is_verbose: print verbose output
+        cover: if there is already an album cover for [album_name] by [artist_name]
+    """
     music = Music()
     temp_path = get_song(song_link)
     has_album = music.check_album_exists(artist_name, album_name, is_verbose)
     if not has_album:
         path = create_dirs(artist_name, album_name, is_verbose)
         move_song(temp_path, path, is_verbose)
-        get_cover(artist_name, album_name, is_verbose)
+        if not cover:
+            get_cover(artist_name, album_name, is_verbose)
         update_database()
     else:
         print(config.ALBUM_EXISTS.format(album_name))
@@ -125,7 +146,7 @@ if __name__ == '__main__':
         NAME = ''
         ALBUM = ''
         NEED_HELP=''
-        COVER=''
+        COVER=False
         VERBOSE=False
         for opt, arg in options:
             if opt in ('-h', '--help'):
@@ -138,13 +159,13 @@ if __name__ == '__main__':
             elif opt in ('-a', '--album-name'):
                 ALBUM = remove_spaces(arg)
             elif opt in ('-c', '--cover'):
-                COVER = arg
+                COVER = True
             elif opt in ('-v', '--verbose'):
                 VERBOSE = True
         if NAME == '' or ALBUM == '':
             usage()
             sys.exit(1)
-        run(LINK, NAME, ALBUM, VERBOSE)
+        run(LINK, NAME, ALBUM, VERBOSE, COVER)
 
     except GetoptError:
         print('Getopt Error')
