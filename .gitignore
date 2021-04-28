@@ -1,3 +1,4 @@
 .mypy_cache/*
 .git/*
+src/__pycache__/*
 __pycache__/*
