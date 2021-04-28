@@ -1,7 +1,7 @@
 """Music class."""
 import pathlib
 import config
-from utils import get_current_directory
+from utils import get_current_directory, remove_spaces
 
 class Music:
     """Music class to acumulate data about the Music directory."""
@@ -18,7 +18,8 @@ class Music:
         tlist = []
         for tpath in path.iterdir():
             if tpath.is_dir():
-                tlist.append(get_current_directory(tpath).upper())
+                upper = get_current_directory(tpath).upper()
+                tlist.append(remove_spaces(upper))
                 temp = get_current_directory(tpath)
                 if temp not in self.data:
                     self.data[temp] = {}
@@ -28,7 +29,8 @@ class Music:
     def get_albums_in_filesystem(self, path: pathlib.Path, artist: str,
                                  is_verbose: bool):
         """
-        Returns list of UPPERCASE albums in filesystem for given artist
+        Returns list of UPPERCASE album names (with spaces removed)
+        in filesystem for given artist
         """
         if is_verbose:
             print(f'Getting list of albums for {artist}.')
@@ -36,7 +38,8 @@ class Music:
         new_path = path.joinpath(artist)
         for i in new_path.iterdir():
             if i.is_dir():
-                tlist.append(get_current_directory(i).upper())
+                upper = get_current_directory(i).upper()
+                tlist.append(remove_spaces(upper))
                 album = get_current_directory(i)
                 if album not in self.data[artist]:
                     self.data[artist][album] = []
