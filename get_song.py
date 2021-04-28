@@ -194,6 +194,8 @@ def run(song_link: str, artist_name: str, album_name: str, is_verbose: bool):
         update_database()
     else:
         print(config.AlBUM_EXISTS.format(album_name))
+        path = pathlib.Path(config.BASE_DIR)
+        path = path.joinpath(artist_name, album_name)
         move_song(temp_path, path, is_verbose)
         update_database()
 
