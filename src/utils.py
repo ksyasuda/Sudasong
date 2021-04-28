@@ -1,5 +1,6 @@
 """Utility functions for get_song.py"""
 import pathlib
+from config import BASE_DIR
 
 def get_current_directory(path: pathlib.Path) -> str:
     """
@@ -26,3 +27,15 @@ def get_space_separated(tname: str) -> str:
 def remove_spaces(string: str) -> str:
     """Returns string without the spaces."""
     return ''.join(string.split(' ')[:])
+
+
+def get_artist_dir(artist: str) -> str:
+    """Gets the string of the artists name in the filesystem."""
+    base_dir = pathlib.Path(BASE_DIR)
+    for i in base_dir.iterdir():
+        t_artist = get_current_directory(i)
+        if artist.upper() == t_artist.upper() or \
+                remove_spaces(artist.upper()) == \
+                remove_spaces(t_artist.upper()):
+            return str(t_artist)
+    return ''

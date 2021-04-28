@@ -4,8 +4,10 @@ Test to check the check_album_exists(artist, album, verbose) funtion
 """
 
 import unittest
+import pathlib
 import get_song
 import pytest
+from utils import get_artist_dir
 
 MUSIC = get_song.Music()
 
@@ -34,6 +36,27 @@ class TestCheckAlbumExists(unittest.TestCase):
         """Artist exists but Album does not."""
         name = 'BROCKHAMPTON'
         album = 'SATURATION III'
+        self.check_album_helper(name, album, False)
+
+
+    def test_exist_with_different_casing(self):
+        """Test with name/album that exists but with different letter casings."""
+        name = 'lil tecca'
+        album = 'VIRgO woRlD'
+        self.check_album_helper(name, album, True)
+        self.check_album_helper('LIl Tec c a', album, True)
+
+
+    def test_not_exist_with_diff_casing(self):
+        """
+        Test with name that exists, album that doesn't exist and different
+        letter casings.
+        """
+        name = '2 1 SaV age'
+        album = 'isaAl bum'
+        albums = MUSIC.get_albums_in_filesystem(pathlib.Path(get_song.config.BASE_DIR),
+                                                get_artist_dir(name), False)
+        self.assertGreater(len(albums), 0)
         self.check_album_helper(name, album, False)
 
 

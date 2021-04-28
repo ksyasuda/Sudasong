@@ -1,7 +1,8 @@
 """Music class."""
 import pathlib
+import sys
 import config
-from utils import get_current_directory, remove_spaces
+from utils import get_current_directory, remove_spaces, get_artist_dir
 
 class Music:
     """Music class to acumulate data about the Music directory."""
@@ -11,14 +12,14 @@ class Music:
 
     def get_artists_in_filesystem(self, path: pathlib.Path, is_verbose: bool) -> list[str]:
         """
-        returns a lsit of UPPERCASE artists in ~/Music/
+        returns a list of artists in ~/Music/
         """
         if is_verbose:
             print('Getting list of artists.')
         tlist = []
         for tpath in path.iterdir():
             if tpath.is_dir():
-                upper = get_current_directory(tpath).upper()
+                upper = get_current_directory(tpath)
                 tlist.append(remove_spaces(upper))
                 temp = get_current_directory(tpath)
                 if temp not in self.data:
@@ -38,7 +39,7 @@ class Music:
         new_path = path.joinpath(artist)
         for i in new_path.iterdir():
             if i.is_dir():
-                upper = get_current_directory(i).upper()
+                upper = get_current_directory(i)
                 tlist.append(remove_spaces(upper))
                 album = get_current_directory(i)
                 if album not in self.data[artist]:
@@ -54,10 +55,16 @@ class Music:
         if is_verbose:
             print(f"Checking whether {alb_name} exists in {base_dir}.")
         artists = self.get_artists_in_filesystem(base_dir, is_verbose)
-        if artist.upper() in artists or remove_spaces(artist.upper()) in artists:
-            albums = self.get_albums_in_filesystem(base_dir, artist, is_verbose)
-            if alb_name.upper() in albums or \
-                    remove_spaces(alb_name.upper()) in albums:
+        upper_artists = [i.upper() for i in artists]
+        if artist.upper() in upper_artists or remove_spaces(artist.upper()) in upper_artists:
+            artist_dir = get_artist_dir(artist)
+            if artist_dir == '':
+                print('Error: Artist not found')
+                sys.exit(1)
+            albums = self.get_albums_in_filesystem(base_dir, artist_dir, is_verbose)
+            upper_albums = [i.upper() for i in albums]
+            if alb_name.upper() in upper_albums or \
+                    remove_spaces(alb_name.upper()) in upper_albums:
                 if is_verbose:
                     print(f"Found {alb_name} in directory.")
                 return True
