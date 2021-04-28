@@ -54,9 +54,10 @@ class Music:
         if is_verbose:
             print(f"Checking whether {alb_name} exists in {base_dir}.")
         artists = self.get_artists_in_filesystem(base_dir, is_verbose)
-        if artist.upper() in artists:
+        if artist.upper() in artists or remove_spaces(artist.upper()) in artists:
             albums = self.get_albums_in_filesystem(base_dir, artist, is_verbose)
-            if alb_name.upper() in albums:
+            if alb_name.upper() in albums or \
+                    remove_spaces(alb_name.upper()) in albums:
                 if is_verbose:
                     print(f"Found {alb_name} in directory.")
                 return True

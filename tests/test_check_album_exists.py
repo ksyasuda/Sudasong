@@ -19,14 +19,21 @@ class TestCheckAlbumExists(unittest.TestCase):
 
     def test_does_exist1(self):
         """Checks an album from artist that does exist."""
-        album = 'LegendsNeverDie'
-        name = 'JUICEWRLD'
+        album = 'Legends Never Die'
+        name = 'Juice WRLD'
         self.check_album_helper(name, album, True)
 
     def test_doesnt_exist1(self):
         """Album/Artist that both don't exist."""
-        album = 'LilPump'
-        name = 'LilPump'
+        album = 'Lil Pump'
+        name = 'Lil Pump'
+        self.check_album_helper(name, album, False)
+
+
+    def test_doesnt_exist2(self):
+        """Artist exists but Album does not."""
+        name = 'BROCKHAMPTON'
+        album = 'SATURATION III'
         self.check_album_helper(name, album, False)
 
 
