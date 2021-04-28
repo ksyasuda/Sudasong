@@ -39,18 +39,18 @@ def create_dirs(artist_name: str, album_name: str, is_verbose: bool) -> pathlib.
     new_path = base_dir.joinpath(artist_name)
     try:
         if is_verbose:
-            print(f"Trying to create directory for {artist_name}")
+            print(f'Trying to create directory for "{artist_name}"')
         new_path.mkdir(parents=True)
         new_path = new_path.joinpath(album_name)
         if is_verbose:
-            print('Creating new directory for {album_name} in {artist_name}')
+            print(f'Creating new directory for "{album_name}" in "{artist_name}"')
         new_path.mkdir(parents=True)
     except FileExistsError:
         if is_verbose:
             print(f"{artist_name} already exists in filesystem...")
         new_path = new_path.joinpath(album_name)
         if is_verbose:
-            print('Creating new directory for {album_name} in {artist_name}')
+            print('Creating new directory for "{album_name}" in "{artist_name}"')
         new_path.mkdir(parents=True)
     return new_path
 
