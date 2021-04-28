@@ -120,7 +120,8 @@ def run(song_link: str, artist_name: str, album_name: str, is_verbose: bool,
     """
     music = Music()
     temp_path = get_song(song_link)
-    has_album = music.check_album_exists(artist_name, album_name, is_verbose)
+    has_album = music.check_album_exists(remove_spaces(artist_name),
+                                         remove_spaces(album_name), is_verbose)
     if not has_album:
         path = create_dirs(artist_name, album_name, is_verbose)
         move_song(temp_path, path, is_verbose)
@@ -155,9 +156,9 @@ if __name__ == '__main__':
             if opt in ('-l', '--link'):
                 LINK = arg
             elif opt in ('-n', '--name'):
-                NAME = remove_spaces(arg)
+                NAME = arg
             elif opt in ('-a', '--album-name'):
-                ALBUM = remove_spaces(arg)
+                ALBUM = arg
             elif opt in ('-c', '--cover'):
                 COVER = True
             elif opt in ('-v', '--verbose'):
