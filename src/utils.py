@@ -21,3 +21,8 @@ def get_space_separated(tname: str) -> str:
             continue
         name += i
     return name
+
+
+def remove_spaces(string: str) -> str:
+    """Returns string without the spaces."""
+    return ''.join(string.split(' ')[:])

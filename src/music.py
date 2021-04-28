@@ -11,14 +11,14 @@ class Music:
 
     def get_artists_in_filesystem(self, path: pathlib.Path, is_verbose: bool) -> list[str]:
         """
-        returns a lsit of artists in ~/Music/
+        returns a lsit of UPPERCASE artists in ~/Music/
         """
         if is_verbose:
             print('Getting list of artists.')
         tlist = []
         for tpath in path.iterdir():
             if tpath.is_dir():
-                tlist.append(get_current_directory(tpath))
+                tlist.append(get_current_directory(tpath).upper())
                 temp = get_current_directory(tpath)
                 if temp not in self.data:
                     self.data[temp] = {}
@@ -28,7 +28,7 @@ class Music:
     def get_albums_in_filesystem(self, path: pathlib.Path, artist: str,
                                  is_verbose: bool):
         """
-        Returns list of albums in filesystem for given artist
+        Returns list of UPPERCASE albums in filesystem for given artist
         """
         if is_verbose:
             print(f'Getting list of albums for {artist}.')
@@ -36,7 +36,7 @@ class Music:
         new_path = path.joinpath(artist)
         for i in new_path.iterdir():
             if i.is_dir():
-                tlist.append(get_current_directory(i))
+                tlist.append(get_current_directory(i).upper())
                 album = get_current_directory(i)
                 if album not in self.data[artist]:
                     self.data[artist][album] = []
@@ -51,9 +51,9 @@ class Music:
         if is_verbose:
             print(f"Checking whether {alb_name} exists in {base_dir}.")
         artists = self.get_artists_in_filesystem(base_dir, is_verbose)
-        if artist in artists:
+        if artist.upper() in artists:
             albums = self.get_albums_in_filesystem(base_dir, artist, is_verbose)
-            if alb_name in albums:
+            if alb_name.upper() in albums:
                 if is_verbose:
                     print(f"Found {alb_name} in directory.")
                 return True

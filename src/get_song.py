@@ -9,7 +9,7 @@ import os
 import pathlib
 from getopt import gnu_getopt, GetoptError
 from music import Music
-from utils import get_current_directory, get_space_separated
+from utils import get_current_directory, get_space_separated, remove_spaces
 import config
 
 
@@ -134,9 +134,9 @@ if __name__ == '__main__':
             if opt in ('-l', '--link'):
                 LINK = arg
             elif opt in ('-n', '--name'):
-                NAME = arg
+                NAME = remove_spaces(arg)
             elif opt in ('-a', '--album-name'):
-                ALBUM = arg
+                ALBUM = remove_spaces(arg)
             elif opt in ('-c', '--cover'):
                 COVER = arg
             elif opt in ('-v', '--verbose'):
