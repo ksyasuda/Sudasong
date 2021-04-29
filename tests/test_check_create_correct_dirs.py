@@ -35,7 +35,7 @@ def cleanup_album(path: pathlib.Path):
     path.rmdir()
 
 
-def test_1():
+def test_neither_exists():
     """
     Tests creating directory for Yannick Nandury and his album: Freud.
     """
@@ -51,7 +51,7 @@ def test_1():
     cleanup(del_path)
 
 
-def test_2():
+def test_both_exist():
     """
     Tests trying to create directories that already exist.
     """
@@ -61,7 +61,7 @@ def test_2():
     assert path == not_created
 
 
-def test_3():
+def test_artist_exist():
     """
     Tests trying to create dir when artist exists but album does not.
     """
@@ -78,4 +78,4 @@ def test_3():
 
 
 if __name__ == '__main__':
-    pytest.main(["-vv", "-k TestCheckCreteCorrectDirs"])
+    pytest.main(["-vv", "-k create_correct_dirs"])
