@@ -34,6 +34,8 @@ def create_dirs(artist_name: str, album_name: str, is_verbose: bool) -> pathlib.
     """
     Creates directory for the artist and album and returns the path to the
     album.
+
+    Returns empty pathlib.Path if artist and album already exist in filesystem
     """
     base_dir = pathlib.Path(config.BASE_DIR)
     new_path = base_dir.joinpath(artist_name)
@@ -51,7 +53,12 @@ def create_dirs(artist_name: str, album_name: str, is_verbose: bool) -> pathlib.
         new_path = new_path.joinpath(album_name)
         if is_verbose:
             print('Creating new directory for "{album_name}" in "{artist_name}"')
-        new_path.mkdir(parents=True)
+        try:
+            new_path.mkdir(parents=True)
+        except FileExistsError:
+            print('Album already exists in filesystem..')
+            print('Nothing to do...\nExiting')
+            return pathlib.Path('')
     return new_path
 
 
