@@ -30,14 +30,14 @@ def get_song(link: str) -> pathlib.Path:
     return path
 
 
-def create_dirs(artist_name: str, album_name: str, is_verbose: bool) -> pathlib.Path:
+def create_dirs(path: str, artist_name: str, album_name: str, is_verbose: bool) -> pathlib.Path:
     """
     Creates directory for the artist and album and returns the path to the
     album.
 
     Returns empty pathlib.Path if artist and album already exist in filesystem
     """
-    base_dir = pathlib.Path(config.BASE_DIR)
+    base_dir = pathlib.Path(path)
     new_path = base_dir.joinpath(artist_name)
     try:
         if is_verbose:
@@ -130,7 +130,7 @@ def run(song_link: str, artist_name: str, album_name: str, is_verbose: bool,
     has_album = music.check_album_exists(remove_spaces(artist_name),
                                          remove_spaces(album_name), is_verbose)
     if not has_album:
-        path = create_dirs(artist_name, album_name, is_verbose)
+        path = create_dirs(config.BASE_DIR, artist_name, album_name, is_verbose)
         move_song(temp_path, path, is_verbose)
         if not cover:
             get_cover(artist_name, album_name, is_verbose)
