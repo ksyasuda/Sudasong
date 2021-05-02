@@ -65,13 +65,18 @@ def create_dirs(path: str, artist_name: str, album_name: str, is_verbose: bool) 
 def move_song(old_path: pathlib.Path, new_path: pathlib.Path, is_verbose: bool):
     """
     Move song from download location to the passed in path.
+
+    Inputs:
+        old_path: path to the file currently
+        new_path: the new path
+        is_verbose: verbose
     """
     if not old_path.exists():
         print(f'{str(old_path)} in path does not exist in the filesystem')
         sys.exit(1)
-    if not new_path.exists():
-        print(f'{str(new_path)} in path does not exist in the filesystem')
-        sys.exit(1)
+    # if not parent.exists():
+    #     print(f'{str(new_path)} in path does not exist in the filesystem')
+    #     sys.exit(1)
     song = get_current_directory(old_path)
     new_path = new_path.joinpath(song)
     old_path.rename(new_path)
