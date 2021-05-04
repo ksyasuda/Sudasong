@@ -79,9 +79,9 @@ def move_song(old_path: pathlib.Path, new_path: pathlib.Path, is_verbose: bool):
     #     sys.exit(1)
     song = get_current_directory(old_path)
     new_path = new_path.joinpath(song)
-    old_path.rename(new_path)
+    temp = old_path.rename(new_path)
     if is_verbose:
-        print(f'Moved {song} to {new_path}')
+        print(f'Moved {song} to {temp}')
 
 
 def get_cover(art_name: str, alb_name: str, is_verbose: bool):
