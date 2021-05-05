@@ -8,6 +8,7 @@ import sys
 import os
 import pathlib
 from getopt import gnu_getopt, GetoptError
+from typing import Union
 from music import Music
 from utils import get_current_directory, get_space_separated, remove_spaces
 import config
@@ -62,7 +63,8 @@ def create_dirs(path: str, artist_name: str, album_name: str, is_verbose: bool) 
     return new_path
 
 
-def move_song(old_path: pathlib.Path, new_path: pathlib.Path, is_verbose: bool):
+def move_song(old_path: pathlib.Path, new_path: pathlib.Path,
+              is_verbose: bool) -> Union[pathlib.Path, int]:
     """
     Move song from download location to the passed in path.
 
@@ -73,15 +75,21 @@ def move_song(old_path: pathlib.Path, new_path: pathlib.Path, is_verbose: bool):
     """
     if not old_path.exists():
         print(f'{str(old_path)} in path does not exist in the filesystem')
-        sys.exit(1)
-    # if not parent.exists():
-    #     print(f'{str(new_path)} in path does not exist in the filesystem')
-    #     sys.exit(1)
+        return -1
     song = get_current_directory(old_path)
-    new_path = new_path.joinpath(song)
+    if new_path.exists():
+        # if the song is already in the library, delete old_path
+        print(f"{song} already in the filesystem at {str(old_path)}.")
+        print(f"Deleting {str(old_path)}")
+        old_path.unlink()
+        return -1
+    parent = pathlib.Path(str(new_path)[:str(new_path).rfind('/')])
+    if not parent.exists():
+        parent.mkdir(parents=True)
     temp = old_path.rename(new_path)
     if is_verbose:
         print(f'Moved {song} to {temp}')
+    return new_path
 
 
 def get_cover(art_name: str, alb_name: str, is_verbose: bool):
@@ -144,7 +152,9 @@ def run(song_link: str, artist_name: str, album_name: str, is_verbose: bool,
         print(config.ALBUM_EXISTS.format(album_name))
         path = pathlib.Path(config.BASE_DIR)
         path = path.joinpath(artist_name, album_name)
-        move_song(temp_path, path, is_verbose)
+        res = move_song(temp_path, path, is_verbose)
+        if res == -1:
+            return 1
         update_database()
 
 
