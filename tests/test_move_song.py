@@ -46,9 +46,10 @@ def test_move_song1():
     song = 'Frued.mp3'
     path = create_test_song(test_dir/'test1_in', name, album, song)
     assert path.exists()
-    new_path = pathlib.Path(test_dir/'test1_out'/name/album/song)
-    move_song(path, new_path, True)
-    assert not path.exists()
+    old_path = pathlib.Path(test_dir/'test1_in'/name/album/song)
+    new_path = pathlib.Path(test_dir/'test1_out'/name/album)
+    move_song(old_path, new_path, True)
+    assert not old_path.exists()
     assert new_path.exists()
     cleanup()
 
@@ -58,12 +59,14 @@ def test_move_song2():
     name = 'Charles Altman'
     album = 'Charlie Charlies'
     song = 'Not a Freud.mp3'
-    new_path = create_test_song(test_dir/'test1_in', name, album, song)
-    assert new_path.exists()
-    path = create_test_song(test_dir/'test1_out', name, album, song)
+    path = create_test_song(test_dir/'test1_in', name, album, song)
     assert path.exists()
-    move_song(path, new_path, True)
-    assert not path.exists()
+    old_path = pathlib.Path(test_dir/'test1_in'/name/album/song)
+    new_path = create_test_song(test_dir/'test1_out', name, album, song)
+    new_path = pathlib.Path(test_dir/'test1_out'/name/album)
+    assert old_path.exists()
+    move_song(old_path, new_path, True)
+    assert not old_path.exists()
     assert new_path.exists()
     cleanup()
 

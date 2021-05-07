@@ -69,24 +69,25 @@ def move_song(old_path: pathlib.Path, new_path: pathlib.Path,
     Move song from download location to the passed in path.
 
     Inputs:
-        old_path: path to the file currently
-        new_path: the new path
+        old_path: path to the file currently [includes song.mp3]
+        new_path: new path to the album [not includes song.mp3]
         is_verbose: verbose
     """
     if not old_path.exists():
         print(f'{str(old_path)} in path does not exist in the filesystem')
         return -1
     song = get_current_directory(old_path)
-    if new_path.exists():
+    if new_path.joinpath(song).exists():
         # if the song is already in the library, delete old_path
         print(f"{song} already in the filesystem at {str(old_path)}.")
         print(f"Deleting {str(old_path)}")
         old_path.unlink()
         return -1
-    parent = pathlib.Path(str(new_path)[:str(new_path).rfind('/')])
-    if not parent.exists():
-        parent.mkdir(parents=True)
-    temp = old_path.rename(new_path)
+    if not new_path.exists():
+        # if the artist/album directories don't exist, create them first
+        new_path.mkdir(parents=True)
+    # move from temp folder to corect location in Music dir
+    temp = old_path.rename(new_path.joinpath(song))
     if is_verbose:
         print(f'Moved {song} to {temp}')
     return new_path
