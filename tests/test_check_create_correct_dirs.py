@@ -31,7 +31,7 @@ def cleanup(path: pathlib.Path):
 
 def tmp_clean() -> bool:
     """
-    Checks that the tmp folder doesn't contain anything yet and can begin testing.
+    Checks that the tmp folder doesn't contain anything yet and can begin test.
     """
     return len([str(i) for i in tmp.iterdir()]) == 0
 

@@ -11,9 +11,9 @@ setuptools.setup(
     description="Downloads a song and album and places it in the right place",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/ksyasuda",
+    url="https://github.com/ksyasuda/get-song",
     project_urls={
-        "Bug Tracker": "https://github.com/ksyasuda",
+        "Bug Tracker": "https://github.com/ksyasuda/get-song/issues",
     },
     classifiers=[
         "Programming Language :: Python :: 3",

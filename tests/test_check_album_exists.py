@@ -9,6 +9,8 @@ import pytest
 from utils import get_artist_dir
 
 MUSIC = get_song.Music()
+
+
 def check_album_helper(name, album, assertion):
     """Helper method to call check_album_exists()."""
     exists = MUSIC.check_album_exists(name, album, False)
@@ -20,6 +22,7 @@ def test_does_exist1():
     album = 'Legends Never Die'
     name = 'Juice WRLD'
     check_album_helper(name, album, True)
+
 
 def test_doesnt_exist1():
     """Album/Artist that both don't exist."""
@@ -50,7 +53,8 @@ def test_not_exist_with_diff_casing():
     """
     name = '2 1 SaV age'
     album = 'isaAl bum'
-    albums = MUSIC.get_albums_in_filesystem(pathlib.Path(get_song.config.BASE_DIR),
+    base_dir = get_song.config.BASE_DIR
+    albums = MUSIC.get_albums_in_filesystem(pathlib.Path(base_dir),
                                             get_artist_dir(name), False)
     assert len(albums) > 0
     check_album_helper(name, album, False)

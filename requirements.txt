@@ -8,7 +8,6 @@ colorama==0.4.4
 cryptography==3.4.7
 docutils==0.17.1
 fancycompleter==0.9.1
--e git+git@github.com:ksyasuda/get-song.git@9faec3322b9217bb608e42d625faab902ef6fdeb#egg=get_song_sudacode
 idna==2.10
 importlib-metadata==4.0.1
 iniconfig==1.1.1

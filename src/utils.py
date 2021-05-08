@@ -2,6 +2,7 @@
 import pathlib
 from config import BASE_DIR
 
+
 def get_current_directory(path: pathlib.Path) -> str:
     """
     Returns the artist name from the passed in path.

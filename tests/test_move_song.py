@@ -7,7 +7,7 @@ import pytest
 from get_song import move_song
 
 test_dir = pathlib.Path(__file__[:__file__.rfind('/')])
-print(test_dir)
+
 
 def delete_tree(path: pathlib.Path):
     """
@@ -32,7 +32,9 @@ def create_test_song(path: pathlib.Path, name,
 
 
 def cleanup():
-    """Performs cleaup [deleting] on the test_1 input and output directories."""
+    """
+    Performs cleaup [deleting] on the test_1 input and output directories.
+    """
     glob = 'test1_*'
     to_delete = test_dir.glob(glob)
     for i in to_delete:
@@ -62,7 +64,7 @@ def test_move_song2():
     path = create_test_song(test_dir/'test1_in', name, album, song)
     assert path.exists()
     old_path = pathlib.Path(test_dir/'test1_in'/name/album/song)
-    new_path = create_test_song(test_dir/'test1_out', name, album, song)
+    create_test_song(test_dir/'test1_out', name, album, song)
     new_path = pathlib.Path(test_dir/'test1_out'/name/album)
     assert old_path.exists()
     move_song(old_path, new_path, True)
