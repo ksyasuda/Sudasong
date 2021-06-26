@@ -8,6 +8,7 @@ Creates and places files in appropriate directories
 import sys
 import os
 import pathlib
+from threading import Thread
 from getopt import gnu_getopt, GetoptError
 from typing import Union
 from music import Music
@@ -152,9 +153,24 @@ def run(song_link: str, artist_name: str, album_name: str, is_verbose: bool,
     if not has_album:
         path = create_dirs(config.BASE_DIR, artist_name,
                            album_name, is_verbose)
-        move_song(temp_path, path, is_verbose)
+        # move_song(temp_path, path, is_verbose)
+
+        threads = []
         if not cover:
-            get_cover(artist_name, album_name, is_verbose)
+            # get_cover(artist_name, album_name, is_verbose)
+            cover_thread = Thread(target=get_cover, args=[artist_name, album_name,
+                                  is_verbose])
+            cover_thread.start()
+            threads.append(cover_thread)
+
+        move_thread = Thread(target=move_song, args=[temp_path, path, is_verbose])
+        move_thread.start()
+        threads.append(move_thread)
+
+        # wait for threads to finish
+        for thread in threads:
+            thread.join()
+
         update_database()
     else:
         print(config.ALBUM_EXISTS.format(album_name))
