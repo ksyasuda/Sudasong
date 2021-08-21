@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: sudasong
+Version: 0.0.2
+Summary: Downloads a song and album and places it in the right place
+Home-page: https://github.com/ksyasuda/sudasong
+Author: Kyle Yasuda (sudacode)
+Author-email: the.sudacode@gmail.com
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/ksyasuda/sudasong/issues
+Description: # Sudacode Get Song Script
+        
+        Python script to download songs and album covers using `youtube-dl` and `dunst`
+        for notifications.
+        
+        
+        ## Usage
+        
+        	python get_song.py [arguments]
+        	or
+        	./python get_song.py [arguments]
+        
+        ## Arguments
+        
+        * `-l`, `--link`: The link to the song (used in `youtube-dl` call)
+        * `-n`, `--name`: The name of the artist
+        * `-a`, `--album-name`: The name of the album
+        * `-c`, `--cover`: Currently does nothing
+        * `-h`, `--help`: Prints the help menu
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
