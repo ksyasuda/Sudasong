@@ -5,15 +5,16 @@ Creates and places files in appropriate directories
 """
 
 
-import sys
 import os
 import pathlib
+import sys
+from getopt import GetoptError, gnu_getopt
 from threading import Thread
-from getopt import gnu_getopt, GetoptError
 from typing import Union
+
+import config
 from music import Music
 from utils import get_current_directory, get_space_separated, remove_spaces
-import config
 
 
 def get_song(link: str) -> pathlib.Path:
@@ -24,9 +25,9 @@ def get_song(link: str) -> pathlib.Path:
     """
     temp_dir = pathlib.Path(config.TEMP_DIR)
     command = f"yta-mp3 {link}"
-    command = f"youtube-dl --extract-audio --audio-format mp3 \
+    command = f"yt-dlp --extract-audio --audio-format mp3 \
         --config-location \
-        /home/sudacode/.config/youtube-dl/config.audio {link}"
+        /home/sudacode/.config/yt-dlp/config.audio {link}"
     os.system(command)
     path = pathlib.Path()
     for i in temp_dir.iterdir():
